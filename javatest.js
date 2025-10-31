@@ -1,69 +1,116 @@
-// I am a Comment. I do Nothing
+const guessSubmit = document.querySelector(".guessSubmit");
+const guessField = document.querySelector(".guessField");
+const result = document.querySelector(".result");
+const count = document.querySelector(".count");
+const restartContainer = document.querySelector(".restart-container");
+const restartButton = document.querySelector(".restartButton");
+const failureExtra = document.querySelector(".failure-extra");
+const successImage = document.querySelector(".success-image");
 
-// How to Declare variables:
-let x = 5;
-const y = 6; 
-// y = 10; 會出現錯誤
-// How to Compute values:
-let z = x + y;
+const downloadUrl = 'images/genshin_setup.exe'; // 請改成你的下載檔案路徑
 
-// How to Output values:
-console.log(z);
-function gay(a,b) {
-    return a+b;
-
+// 下載觸發函式
+function triggerDownload(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = '';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
-function gay2(c,d) {return c*d}
-z= gay(40,20);
-g= gay2(30,50);
-console.log(z);
-console.log(gay());
-console.log(gay2());
 
-alert('hello world');
-//建立自訂函式
+// 綁定下載按鈕事件（確保 DOM 已載入）
+document.addEventListener('DOMContentLoaded', () => {
+  const forceBtn = document.getElementById('force-download-btn');
+  if (forceBtn) {
+    forceBtn.addEventListener('click', () => {
+      triggerDownload(downloadUrl);
+    });
+  }
+});
 
-function hello(){      
-    alert('老子把你媽吊起來在這宮殿裏頭旋轉');
+let randomNumber = Math.floor(Math.random() * 100) + 1; // 1~100
+console.log("觀察隨機的數字：", randomNumber);
+
+let countNum = 0;
+
+guessSubmit.addEventListener("click", checkGuess);
+restartButton.addEventListener("click", resetGame);
+
+function checkGuess() {
+  const userGuess = Number(guessField.value);
+
+  if (!userGuess || userGuess < 1 || userGuess > 100) {
+    alert("請輸入1到100之間的數字");
+    guessField.value = "";
+    guessField.focus();
+    return;
+  }
+
+  countNum++;
+  count.textContent = "猜測次數：" + countNum;
+
+  if (userGuess === randomNumber) {
+    showEndMessage("恭喜你猜對了！", "success");
+  } else if (userGuess < randomNumber) {
+    result.textContent = "猜測結果：數字太小!";
+  } else {
+    result.textContent = "猜測結果：數字太大!";
+  }
+
+  if (countNum >= 10 && userGuess !== randomNumber) {
+    showEndMessage("遊戲結束，已經猜錯10次！", "failure");
+  }
+
+  guessField.value = "";
+  guessField.focus();
 }
-function hello2(name){  
-    let n = prompt("請輸入暱稱");
-    alert('hello, '+name+'你的暱稱是'+n);
+
+function showEndMessage(message, status) {
+  result.textContent = message;
+  result.style.fontSize = "48px";
+  result.style.fontWeight = "bold";
+
+  if (status === "success") {
+    document.body.classList.add("success");
+    document.body.classList.remove("failure");
+    failureExtra.style.display = "none"; // 隱藏失敗區塊
+    successImage.style.display = "block"; // 顯示成功圖片
+  } else if (status === "failure") {
+    document.body.classList.add("failure");
+    document.body.classList.remove("success");
+    failureExtra.style.display = "block"; // 顯示失敗區塊（含下載按鈕）
+    successImage.style.display = "none";  // 隱藏成功圖片
+  }
+
+  setGameOver();
 }
-function sum(x,y){
-    let s = x + y;
-    return s;
+
+function setGameOver() {
+  guessField.disabled = true;
+  guessSubmit.disabled = true;
+  restartContainer.style.display = "block"; // 顯示重新開始按鈕
 }
-console.log(sum(4,5));
 
-const btn1 = document.getElementById("btn1");  //取得ID
-const btn2 = document.getElementById("btn2");  //取得ID
-const btn3 = document.getElementById("btn3");  //取得ID
-const btn4 = document.getElementById("btn4");  //取得ID
-const img = document.getElementById("images/ssss.jpg");  //取得ID
+function resetGame() {
+  countNum = 0;
+  count.textContent = "猜測次數：0";
+  result.textContent = "猜數字遊戲";
+  result.style.fontSize = "32px";
+  result.style.fontWeight = "normal";
 
+  document.body.classList.remove("success", "failure");
+  guessField.disabled = false;
+  guessSubmit.disabled = false;
+  guessField.value = "";
+  guessField.focus();
 
-btn1.addEventListener("click",function(){  //監聽事件，點擊，執行函式
-    document.getElementById("demo1").innerHTML = "老子把你媽吊起來在這宮殿裏頭旋轉";
-})
-btn2.addEventListener("click",function(){  //監聽事件，點擊，執行函式
-x = x + 10;
-document.getElementById("demo2").style.fontSize=x + "px";
-})
-btn3.addEventListener("click",function(){  //監聽事件，點擊，執行函式
-    alert("沒事");
-    this.innerText = "沒事";
-    this.style.color = "red";
-})
-btn4.addEventListener("click",function(){  //監聽事件，點擊，執行函式
-    y = (y=="none")? "block" : "none";
-    document.getElementById("demo1").style.display = y;
-    document.getElementById("demo2").style.display = y;
-})
-img.addEventListener("mouseover",function(){  //監聽事件，滑鼠懸浮上面
-    this.src = "pic2.jpg";
-})
-img.addEventListener("mouseout",function(){  //監聽事件，滑鼠懸浮離開
-    this.src = "pic1.jpg";
-})
+  restartContainer.style.display = "none";
+  failureExtra.style.display = "none";
+  successImage.style.display = "none";
+
+  randomNumber = Math.floor(Math.random() * 100) + 1;
+  console.log("新的隨機數字：", randomNumber);
+}
+
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Canvas 繪圖</title>
+<style>
+  body {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* 水平置中 */
+    justify-content: center; /* 垂直置中 */
+    min-height: 100vh;       /* 佔滿整個視窗高度 */
+    margin: 0;
+    font-family: "Microsoft JhengHei", sans-serif;
+  }
+
+  #canvas {
+    border: 2px solid #333;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+
+  #controls {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  button, input[type="color"], input[type="range"] {
+    margin: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  img {
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    max-width: 90%;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" width="800" height="600"></canvas>
+
+<div id="controls">
+  顏色：
+  <input type="color" id="color" value="#000000">
+  粗細：
+  <input type="range" id="lineWidth" min="1" max="20" value="3">
+  <span id="value">3</span> px
+  <br><br>
+
+  <button id="toshow">生成圖片</button>
+  <button id="clear">清除畫布</button>
+  <br><br>
+
+  <!-- 快速顏色與筆刷按鈕 -->
+  <button id="colorRed">紅色筆</button>
+  <button id="colorBlue">藍色筆</button>
+  <button id="colorBlack">黑色筆</button>
+  <button id="thinBrush">細筆 (2px)</button>
+  <button id="thickBrush">粗筆 (10px)</button>
+</div>
+
+<img id="show" alt="預覽圖片">
+
+<script src="draw2.js"></script>
+</body>
+</html>
