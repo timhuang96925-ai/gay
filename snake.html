@@ -12,18 +12,87 @@
     justify-content: center;
     height: 100vh;
     color: white;
+    position: relative;
+    overflow: hidden;
   }
+
   canvas {
     background: #222;
     border: 2px solid #0f0;
+  }
+
+  /* === 全螢幕遮罩畫面 === */
+  #startScreen, #difficultyScreen, #gameOverScreen {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  #difficultyScreen, #gameOverScreen { display: none; }
+
+  button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: lime;
+    color: black;
+    transition: 0.2s;
+  }
+  button:hover { background: yellow; }
+
+  #scoreBoard {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+
+  .difficulty-buttons {
+    display: flex;
+    gap: 10px;
   }
 </style>
 </head>
 <body>
 <h2>🐍 貪吃蛇遊戲</h2>
+<div id="scoreBoard">分數：0</div>
 <canvas id="canvas" width="400" height="400"></canvas>
 
-<!-- 🔗 外部 JS 檔案 -->
+<!-- 🟢 主選單畫面 -->
+<div id="startScreen">
+  <h2>歡迎來玩貪吃蛇！</h2>
+  <p id="currentDifficulty">目前難度：中</p>
+  <button id="difficultyBtn">選擇難度</button>
+  <button id="startBtn">開始遊戲</button>
+</div>
+
+<!-- 🟡 難度選單畫面 -->
+<div id="difficultyScreen">
+  <h2>選擇遊戲難度</h2>
+  <div class="difficulty-buttons">
+    <button id="lowBtn">低</button>
+    <button id="mediumBtn">中</button>
+    <button id="highBtn">高</button>
+  </div>
+  <button id="backBtn">返回主選單</button>
+</div>
+
+<!-- 🔴 遊戲結束畫面 -->
+<div id="gameOverScreen">
+  <h2>💀 遊戲結束！</h2>
+  <p id="finalScore">你的分數：0</p>
+  <button id="retryBtn">再玩一次</button>
+  <button id="changeDifficultyBtn">更改難度</button>
+  <button id="backToMenuBtn">回主選單</button>
+</div>
+
+<!-- 🔗 外部 JS -->
 <script src="snake.js"></script>
 </body>
 </html>
